@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -12,7 +13,6 @@
     "highlight.js": "^9.13.1",
     "iview": "^3.0.1",
     "marked": "^0.6.2",
-    "node-sass": "^4.12.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
@@ -26,6 +26,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "sass-loader": "^7.1.0",
+    "node-sass": "^4.12.0",
     "vue-cli-plugin-iview": "^1.0.6",
     "vue-template-compiler": "^2.5.21"
   },
@@ -38,7 +39,11 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "vue/no-parsing-error": [2, {
+        "x-invalid-end-tag": false
+      }]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
