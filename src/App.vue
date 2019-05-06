@@ -10,6 +10,11 @@ export default {
   name: 'app',
   methods:{
      
+  },
+  mounted(){
+    this.$router.push({
+      name:'Admin'
+    })
   }
 }
 </script>

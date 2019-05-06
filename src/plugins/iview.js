@@ -10,7 +10,13 @@ import {
     Table,
     Input,
     Tag,
-    Page
+    Page,
+    Menu,
+    MenuItem,
+    Layout,
+    Sider,
+    Header,
+    Content
 } from 'iview'
 
 Vue.component('Button', Button)
@@ -24,5 +30,9 @@ Vue.component('Table', Table)
 Vue.component('Input', Input)
 Vue.component('Tag', Tag)
 Vue.component('Page', Page)
-
+Vue.component('Menu', Menu)
+Vue.component('MenuItem', MenuItem)
+Vue.component('Layout', Layout)
+Vue.component('Sider', Sider)
+Vue.component('Content', Content)
 import 'iview/dist/styles/iview.css'
