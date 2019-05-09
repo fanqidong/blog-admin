@@ -1,3 +1,12 @@
+/* 字体大小 */
+$number: 12 14 16 18 20 22 24 26 28;
+
+@each $i in $number {
+    .font#{$i} {
+        font-size: $i*1px;
+    }
+}
+
 /* flex  */
 .flex {
     display: flex;
@@ -6,7 +15,7 @@
     &1,
     &-wrap, 
     &-center,
-    &-around
+    &-around,
     &-between{
         @extend .flex;
     }

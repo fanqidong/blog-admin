@@ -20,8 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  text-align: center;
-  min-height: 100vh;
+#app{
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 </style>

@@ -1,70 +1,57 @@
-<style scoped>
-    .layout{
-        background: #f5f7f9;
-        position: relative;
-        overflow: hidden;
-    }
-    .layout-header-bar{
-        background: #fff;
-        box-shadow: 0 1px 1px rgba(0,0,0,.1);
-    }
-    .menu-item span{
-        display: inline-block;
-        overflow: hidden;
-        width: 69px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        vertical-align: bottom;
-        transition: width .2s ease .2s;
-    }
-    .menu-item i{
-        transform: translateX(0px);
-        transition: font-size .2s ease, transform .2s ease;
-        vertical-align: middle;
-        font-size: 16px;
-    }
-    .collapsed-menu span{
-        width: 0px;
-        transition: width .2s ease;
-    }
-    .collapsed-menu i{
-        transform: translateX(5px);
-        transition: font-size .2s ease .2s, transform .2s ease .2s;
-        vertical-align: middle;
-        font-size: 22px;
-    }
-    .layout-header-bar{
-      background: #f5f7f9;
-      height: 50px;
-    }
-</style>
+
 <template>
-    <div class="layout">
-        <Layout>
-            <Sider breakpoint="md" collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>Option 1</span>
-                    </MenuItem>
-                    <MenuItem name="1-2">
-                        <Icon type="ios-search"></Icon>
-                        <span>Option 2</span>
-                    </MenuItem>
-                    <MenuItem name="1-3">
-                        <Icon type="ios-settings"></Icon>
-                        <span>Option 3</span>
-                    </MenuItem>
-                </Menu>
-                <div slot="trigger"></div>
-            </Sider>
-            <Layout>
-                <Header class="layout-header-bar"></Header>
-                <Content :style="{ background: '#fff', minHeight: '100vh'}">
-                    Content
-                </Content>
-            </Layout>
-        </Layout>
+    <div class="layout admin">
+        <header class="admin-header flex-between flex-center">
+            <div class="btn-collapse">
+                <img src="http://v3.saas.laiketui.com/application/images/iIcon/shouqi.png" alt="">
+            </div>
+            <div class="admin-info flex-center">
+              <div class="user-info flex-center">
+                  <img src="../assets/img/admin_logo.jpg" alt="" class="user-avatar">
+                  <div class="user-name">
+                      <span>Hi!欢迎</span>
+                      <span>樊启东</span>
+                  </div>
+              </div>
+              <div class="btn-logout">
+                  <img src="http://v3.saas.laiketui.com/application/images/iIcon/tcl.png" alt="">
+              </div>
+            </div> 
+        </header>
+        <aside class="admin-aside">
+            <div class="admin-intro">
+                <img src="../assets/img/logo.png" alt="">
+            </div>
+            <div class="menu-list">
+                <div class="menu-item flex-center">
+                    <span class="menu-icon">
+                        <img src="https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768997927.png" alt="">
+                    </span>
+                    <router-link tag="span" to="/admin/article">文章管理</router-link>
+                </div>
+                <div class="menu-item flex-center">
+                    <span class="menu-icon">
+                        <img src="https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768997927.png" alt="">
+                    </span>
+                    <router-link tag="span" to="/admin/picture">图片管理</router-link>
+                </div>
+                <div class="menu-item flex-center">
+                    <span class="menu-icon">
+                        <img src="https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768997927.png" alt="">
+                    </span>
+                    <router-link tag="span" to="/admin/notice">公告管理</router-link>
+                </div>
+                <div class="menu-item flex-center">
+                    <span class="menu-icon">
+                        <img src="https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768997927.png" alt="">
+                    </span>
+                    <router-link tag="span" to="/admin/mood">心情发表</router-link>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <router-view></router-view>
+        </main>
     </div>
 </template>
 <script>
@@ -75,12 +62,63 @@
             };
         },
         computed: {
-            menuitemClasses: function () {
-                return [
-                    'menu-item',
-                    this.isCollapsed ? 'collapsed-menu' : ''
-                ]
-            }
+            
         }
     }
 </script>
+<style lang="scss" scoped>
+.admin{
+    &-aside{
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 150px;
+        padding: 2px 0 0 0;
+        font-size: 16px;
+        background: #343B4A;
+        color: rgb(200, 205, 220);
+        z-index: 999;
+    }
+    .menu{
+        &-icon{
+            width: 18px;
+            margin-right: 4px;
+        }
+        &-list{
+            padding: 10px 0 0 0;
+        }
+          &-item{
+            height: 50px;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+    }
+    &-header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        padding: 0 40px 0 180px;
+        background: #fff;
+        z-index: 999;
+    }
+    .user{
+        &-avatar{
+            width: 44px;
+            border-radius: 50%;
+        }
+        &-name{
+            margin: 0 10px;
+        }
+    }
+    .main-content{
+        position: relative;
+        margin-left: 150px;
+        padding-top: 50px;
+        overflow-y: auto;
+    }
+}
+</style>
+
