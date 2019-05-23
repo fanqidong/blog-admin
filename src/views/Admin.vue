@@ -13,7 +13,7 @@
                       <span>樊启东</span>
                   </div>
               </div>
-              <div class="btn-logout">
+              <div class="btn-logout is-href" @click="logout">
                   <img src="http://v3.saas.laiketui.com/application/images/iIcon/tcl.png" alt="">
               </div>
             </div> 
@@ -52,17 +52,37 @@
         <main class="main-content">
             <router-view></router-view>
         </main>
+        <Modal
+            v-model="modal"
+            title="确定退出吗？"
+            @on-ok="ok"
+            @on-cancel="cancel">
+        </Modal>
     </div>
 </template>
 <script>
     export default {
         data () {
             return {
-                isCollapsed: false
+                isCollapsed: false,
+                modal:false
             };
         },
         computed: {
             
+        },
+        methods:{
+            // 退出登录
+            logout(){
+                this.modal = true
+            },
+             ok () {
+                this.$router.replace({path: '/'});
+                this.$Message.info('退出成功');
+            },
+            cancel () {
+                this.$Message.info('已取消登录');
+            }
         }
     }
 </script>

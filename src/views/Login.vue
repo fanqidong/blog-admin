@@ -67,10 +67,9 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("登录成功!")
           this.login()
         } else {
-          this.$Message.error("登录失败!")
+          this.$Message.error("账户密码格式错误")
         }
       })
     },
@@ -79,8 +78,12 @@ export default {
         user_name: this.formInline.user,
         user_pwd: this.formInline.password
       })
-      console.log(res)
-      // this.$router.replace({ path: "/admin" })
+     if(res.status == "1"){
+       this.$router.replace({ path: "/admin" })
+       this.$Message.success(res.msg)
+     }else{
+        this.$Message.error(res.msg)
+     }
     }
   }
 }

@@ -12,9 +12,9 @@ export default {
      
   },
   mounted(){
-    this.$router.push({
-      name:'Admin'
-    })
+    // this.$router.push({
+    //   name:'Admin'
+    // })
   }
 }
 </script>
