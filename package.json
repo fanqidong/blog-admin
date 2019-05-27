@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "element-ui": "^2.8.2",
     "highlight.js": "^9.13.1",
     "iview": "^3.0.1",
     "marked": "^0.6.2",
@@ -40,9 +41,12 @@
       "eslint:recommended"
     ],
     "rules": {
-      "vue/no-parsing-error": [2, {
-        "x-invalid-end-tag": false
-      }]
+      "vue/no-parsing-error": [
+        2,
+        {
+          "x-invalid-end-tag": false
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
