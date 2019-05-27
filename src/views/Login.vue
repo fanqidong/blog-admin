@@ -62,6 +62,9 @@ export default {
       }
     }
   },
+  created() {
+       this.$router.replace({ path: "/admin" })
+  },
   mounted() {},
   methods: {
     handleSubmit(name) {
@@ -78,12 +81,12 @@ export default {
         user_name: this.formInline.user,
         user_pwd: this.formInline.password
       })
-     if(res.status == "1"){
-       this.$router.replace({ path: "/admin" })
-       this.$Message.success(res.msg)
-     }else{
+      if (res.status == "1") {
+        this.$router.replace({ path: "/admin" })
+        this.$Message.success(res.msg)
+      } else {
         this.$Message.error(res.msg)
-     }
+      }
     }
   }
 }

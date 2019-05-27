@@ -88,6 +88,8 @@
 </script>
 <style lang="scss" scoped>
 .admin{
+    min-height: 100%;
+    background: #f4f5f5;
     &-aside{
         position: fixed;
         left: 0;
