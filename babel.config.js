@@ -1,13 +1,18 @@
 module.exports = {
-  "presets": [
-    "@vue/app"
-  ],
-  "plugins": [
-    [
-      "import",
+  presets: [
+    '@vue/app',
+    ['@babel/preset-env',      //添加 babel-preset-env 配置 
       {
-        "libraryName": "iview",
-        "libraryDirectory": "src/components"
+        'modules': false
+      }
+    ]
+  ],
+  plugins: [        // element官方教程
+    [
+      'component',
+      {
+        'libraryName': 'element-ui',
+        'styleLibraryName': 'theme-chalk'
       }
     ]
   ]

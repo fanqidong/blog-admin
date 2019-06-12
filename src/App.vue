@@ -1,27 +1,21 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <el-button>按钮</el-button>
+    <router-view/>
   </div>
 </template>
 
-<script>
-
-export default {
-  name: 'app',
-  methods:{
-     
-  },
-  mounted(){
-    // this.$router.push({
-    //   name:'Admin'
-    // })
-  }
-}
-</script>
-
-<style lang="scss">
-#app{
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
