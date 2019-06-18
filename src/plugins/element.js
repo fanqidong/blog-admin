@@ -24,7 +24,6 @@ Vue.use(FormItem)
 Vue.use(Dialog)
 Vue.use(Pagination)
 
-
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert
