@@ -1,7 +1,7 @@
 <template>
   <div class="login-container login">
-    <div class="login-wrapper">
-      <div class="login-clone"></div>
+    <div class="login-wrapper shadow">
+      <div class="login-clone shadow"></div>
       <h2 class="login-title tc">博客后台登录</h2>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
         <el-form-item prop="name">
@@ -102,7 +102,6 @@ export default {
     padding: 10px 20px;
     margin: auto;
     background: #fff;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1), 0 1px 13px rgba(0, 0, 0, 0.05);
   }
   &-clone {
     position: absolute;
@@ -112,7 +111,6 @@ export default {
     height: 100%;
     background: #fff;
     z-index: -1;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1), 0 1px 13px rgba(0, 0, 0, 0.05);
   }
   &-title {
     padding: 10px 0;

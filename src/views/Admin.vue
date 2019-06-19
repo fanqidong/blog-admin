@@ -1,9 +1,32 @@
 <template>
   <div class="layout">
-    <header class="header">
-      <div>头部</div>
+    <header class="header shadow flex-between">
+      <div class="intro">博客后台管理系统</div>
+      <ul class="user-bar flex-center">
+        <li class="user-avatar align-center">
+          <img src="../assets/img/avatar.png" alt>
+        </li>
+        <li class="align-center">
+          <el-dropdown class="user-info">
+            <span class="el-dropdown-link user-name">
+              樊启东
+              <i class="el-icon-arrow-down el-icon--right arrow"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-user">基本信息</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-lock">修改密码</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </li>
+        <li class="btn-logout align-center font20">
+          <i class="el-icon-switch-button" title="退出系统"></i>
+        </li>
+      </ul>
     </header>
     <aside class="side side-menu">
+      <div class="site-logo">
+        <img :src="logo" alt>
+      </div>
       <ul class="menu-list">
         <li v-for="menu in menuList" :key="menu.id" class="menu-item">
           <router-link :to="menu.path" class="flex-center" active-class="active">
@@ -20,10 +43,12 @@
 </template>
 
 <script>
+import logo from '../assets/img/logo.png'
 export default {
   name: 'Admin',
   data() {
     return {
+      logo,
       menuList: [
         {
           id: 1,
@@ -61,22 +86,32 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
+  min-width: 800px;
   height: 60px;
+  padding: 0 40px 0 150px;
   background: #fff;
   z-index: 999;
+  .intro {
+    padding: 10px 0 0 20px;
+    font-size: 30px;
+  }
 }
 .side {
   &-menu {
     position: fixed;
     left: 0;
-    top: 60px;
+    top: 0;
     width: 150px;
     height: 100%;
-    padding: 20px 20px 0;
+    padding-top: 6px;
     font-size: 16px;
     background: #15171c;
+    z-index: 999;
   }
   .menu {
+    &-list {
+      padding: 20px 20px 0;
+    }
     &-item {
       height: 50px;
       a {
@@ -94,6 +129,28 @@ export default {
       width: 19px;
       height: 18px;
       margin-right: 6px;
+    }
+  }
+}
+.user {
+  &-bar {
+    height: 100%;
+    color: #000;
+    li {
+      height: 100%;
+      cursor: pointer;
+    }
+  }
+  &-info {
+    position: relative;
+    min-width: 100px;
+    margin: 0 10px;
+  }
+  &-avatar {
+    img {
+      display: block;
+      height: 46px;
+      border-radius: 50%;
     }
   }
 }
