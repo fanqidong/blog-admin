@@ -7,14 +7,14 @@
           <img src="../assets/img/avatar.png" alt>
         </li>
         <li class="align-center">
-          <el-dropdown class="user-info">
+          <el-dropdown class="user-info" @command="handleCommand">
             <span class="el-dropdown-link user-name">
               樊启东
               <i class="el-icon-arrow-down el-icon--right arrow"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-user">基本信息</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-lock">修改密码</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-user" command="info">基本信息</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-lock" command="edit">修改密码</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </li>
@@ -75,6 +75,11 @@ export default {
           iconUrl: 'https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553769185257.png'
         }
       ]
+    }
+  },
+  methods: {
+    handleCommand(command) {
+      this.$message('click on item ' + command)
     }
   }
 }

@@ -14,7 +14,8 @@ import {
   Message,
   Dropdown,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Tag
 } from 'element-ui'
 
 Vue.use(Button)
@@ -29,6 +30,7 @@ Vue.use(Pagination)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Tag)
 
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
