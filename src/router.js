@@ -10,12 +10,12 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: () => import( /* webpackChunkName: "about" */ './views/Login.vue')
     },
     {
       path: '/admin',
-      name: 'Admin',
+      name: 'admin',
       redirect: '/admin/article',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
@@ -24,22 +24,27 @@ export default new Router({
       children:[
         {
           path: 'article',
-          name: 'Article',
+          name: 'article',
           component: () => import( /* webpackChunkName: "Article" */ './views/management/Article.vue'),
         },
         {
+          path: 'postArticle',
+          name: 'postArticle',
+          component: () => import( /* webpackChunkName: "Article" */ './views/management/PostArticle.vue'),
+        },
+        {
           path: 'picture',
-          name: 'Picture',
+          name: 'picture',
           component: () => import( /* webpackChunkName: "Picture" */ './views/management/Picture.vue'),
         },
         {
           path: 'notice',
-          name: 'Notice',
+          name: 'notice',
           component: () => import( /* webpackChunkName: "Notice" */ './views/management/Notice.vue'),
         },
         {
           path: 'mood',
-          name: 'Mood',
+          name: 'mood',
           component: () => import( /* webpackChunkName: "Mood" */ './views/management/Mood.vue'),
         }
       ]

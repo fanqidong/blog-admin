@@ -30,64 +30,69 @@
       <ul class="menu-list">
         <li v-for="menu in menuList" :key="menu.id" class="menu-item">
           <router-link :to="menu.path" class="flex-center" active-class="active">
-            <img class="menu-icon" :src="menu.iconUrl" alt>
+            <i :class="[menu.icon,'menu-icon']"></i>
             <span>{{menu.title}}</span>
           </router-link>
         </li>
       </ul>
     </aside>
-    <main class="admin-content">
+    <main class="main-content">
       <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
-import logo from '../assets/img/logo.png'
+import logo from '../assets/img/logo.png';
 export default {
-  name: 'Admin',
   data() {
     return {
       logo,
       menuList: [
         {
+          id: 0,
+          path: '/admin/postArticle',
+          title: '文章发布',
+          icon: 'el-icon-edit'
+        },
+        {
           id: 1,
-          path: '/admin/article',
-          title: '文章管理',
-          iconUrl: 'https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768997927.png'
+          path: '/admin/mood',
+          title: '心情发布',
+          icon: 'el-icon-star-off'
         },
         {
           id: 2,
-          path: '/admin/notice',
-          title: '公告管理',
-          iconUrl: 'https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553769084517.png'
+          path: '/admin/article',
+          title: '文章管理',
+          icon: 'el-icon-takeaway-box'
         },
         {
           id: 3,
-          path: '/admin/mood',
-          title: '心情发布',
-          iconUrl: 'https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553768005360.png'
+          path: '/admin/notice',
+          title: '公告管理',
+          icon: 'el-icon-info'
         },
         {
           id: 4,
           path: '/admin/picture',
           title: '图片管理',
-          iconUrl: 'https://laikeds.oss-cn-shenzhen.aliyuncs.com/1/0/1553769185257.png'
+          icon: 'el-icon-picture-outline'
         }
       ]
-    }
+    };
   },
   methods: {
     handleCommand(command) {
-      this.$message('click on item ' + command)
+      this.$message('click on item ' + command);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -159,12 +164,13 @@ export default {
     }
   }
 }
-.admin-content {
+.main-content {
   position: absolute;
   top: 60px;
   right: 0;
   bottom: 0;
   left: 150px;
+  padding: 20px;
 }
 </style>
 
