@@ -101,6 +101,7 @@ export default {
 }
 /deep/.tag-item {
   margin-right: 10px;
+  cursor: pointer;
 }
 .btn-list {
   padding-top: 20px;

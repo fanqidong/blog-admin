@@ -19,7 +19,7 @@
           </el-dropdown>
         </li>
         <li class="btn-logout align-center font20">
-          <i class="el-icon-switch-button" title="退出系统"></i>
+          <i class="el-icon-switch-button" title="退出系统" @click="logout"></i>
         </li>
       </ul>
     </header>
@@ -85,6 +85,25 @@ export default {
   methods: {
     handleCommand(command) {
       this.$message('click on item ' + command);
+    },
+    logout() {
+      this.$confirm('确定退出系统吗？', '系统操作', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        })
+        .catch(() => {
+          this.$notify({
+            title: '提示',
+            message: '取消退出系统'
+          });
+        });
     }
   }
 };
@@ -96,11 +115,10 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  min-width: 800px;
   height: 60px;
   padding: 0 40px 0 150px;
   background: #fff;
-  z-index: 999;
+  z-index: 2000;
   .intro {
     padding: 10px 0 0 20px;
     font-size: 30px;
@@ -116,7 +134,7 @@ export default {
     padding-top: 6px;
     font-size: 16px;
     background: #15171c;
-    z-index: 999;
+    z-index: 2000;
   }
   .menu {
     &-list {
@@ -167,8 +185,6 @@ export default {
 .main-content {
   position: absolute;
   top: 60px;
-  right: 0;
-  bottom: 0;
   left: 150px;
   padding: 20px;
 }
