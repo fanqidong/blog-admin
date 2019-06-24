@@ -1,7 +1,8 @@
 <template>
   <div class="layout">
-    <header class="header shadow flex-between">
-      <div class="intro">博客后台管理系统</div>
+    <header class="header shadow flex-between align-center">
+      <i class="el-icon-s-unfold submenu-icon" @click="openMenu"></i>
+      <div class="intro">旅途与画</div>
       <ul class="user-bar flex-center">
         <li class="user-avatar align-center">
           <img src="../assets/img/avatar.png" alt>
@@ -23,7 +24,24 @@
         </li>
       </ul>
     </header>
-    <aside class="side side-menu">
+    <!-- 移动端菜单 -->
+    <div class="menu-mask" @click="closeMenu" v-if="isMenuShow">
+      <aside class="side side-menu mobile-menu">
+        <div class="site-logo">
+          <img :src="logo" alt>
+        </div>
+        <ul class="menu-list">
+          <li v-for="menu in menuList" :key="menu.id" class="menu-item">
+            <router-link :to="menu.path" class="flex-center" active-class="active">
+              <i :class="[menu.icon,'menu-icon']"></i>
+              <span>{{menu.title}}</span>
+            </router-link>
+          </li>
+        </ul>
+      </aside>
+    </div>
+    <!-- pc 菜单 -->
+    <aside class="side side-menu pc-menu">
       <div class="site-logo">
         <img :src="logo" alt>
       </div>
@@ -37,7 +55,7 @@
       </ul>
     </aside>
     <main class="main-content">
-      <router-view></router-view>
+      <router-view/>
     </main>
   </div>
 </template>
@@ -48,6 +66,7 @@ export default {
   data() {
     return {
       logo,
+      isMenuShow: false,
       menuList: [
         {
           id: 0,
@@ -83,6 +102,12 @@ export default {
     };
   },
   methods: {
+    openMenu() {
+      this.isMenuShow = true;
+    },
+    closeMenu() {
+      this.isMenuShow = false;
+    },
     handleCommand(command) {
       this.$message('click on item ' + command);
     },
@@ -93,14 +118,18 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.$message({
+          this.$notify({
+            title: '提示',
+            message: '退出成功',
             type: 'success',
-            message: '删除成功!'
+            duration: 2000
           });
+          this.$router.replace('/');
         })
         .catch(() => {
           this.$notify({
             title: '提示',
+            type: 'warning',
             message: '取消退出系统'
           });
         });
@@ -116,13 +145,27 @@ export default {
   left: 0;
   width: 100%;
   height: 60px;
-  padding: 0 40px 0 150px;
+  padding: 0 40px 0 160px;
   background: #fff;
-  z-index: 2000;
+  z-index: 1999;
+  transition: all 0.3s;
+  transform: translateZ(0);
   .intro {
-    padding: 10px 0 0 20px;
     font-size: 30px;
   }
+}
+.submenu-icon {
+  display: none;
+}
+.menu-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1999;
+  transition: all 0.3s;
 }
 .side {
   &-menu {
@@ -135,6 +178,7 @@ export default {
     font-size: 16px;
     background: #15171c;
     z-index: 2000;
+    transition: all 0.3s;
   }
   .menu {
     &-list {
@@ -153,7 +197,7 @@ export default {
       }
     }
     &-icon {
-      display: block;
+      display: none;
       width: 19px;
       height: 18px;
       margin-right: 6px;
@@ -186,7 +230,44 @@ export default {
   position: absolute;
   top: 60px;
   left: 150px;
+  right: 0;
   padding: 20px;
+  transition: all 0.3s;
+}
+@media (max-width: 980px) {
+  .header {
+    padding-left: 0;
+    padding-right: 10px;
+    .intro {
+      margin: auto;
+      font-size: 24px;
+    }
+  }
+  .user-info {
+    min-width: initial;
+  }
+  .side-menu {
+    display: none;
+    &.mobile-menu {
+      display: block;
+    }
+  }
+  .submenu-icon {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+  }
+  .main-content {
+    left: 0;
+    width: 100%;
+    padding: 10px;
+  }
+  .mood-edit {
+    width: 100%;
+  }
 }
 </style>
 

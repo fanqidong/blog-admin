@@ -30,7 +30,7 @@ export default new Router({
         {
           path: 'postArticle',
           name: 'postArticle',
-          component: () => import( /* webpackChunkName: "Article" */ './views/management/PostArticle.vue'),
+          component: () => import( /* webpackChunkName: "PostArticle" */ './views/management/PostArticle.vue'),
         },
         {
           path: 'picture',

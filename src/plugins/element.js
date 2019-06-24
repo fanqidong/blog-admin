@@ -36,7 +36,6 @@ Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 Vue.use(Tag);
 Vue.use(Scrollbar);
-Vue.use(Notification);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
@@ -44,3 +43,4 @@ Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
+Vue.prototype.$notify = Notification;

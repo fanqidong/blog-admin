@@ -1,7 +1,7 @@
 <template>
   <div class="page mood">
     <section class="mood-edit">
-      <el-form :label-position="labelPosition" label-width="100px" :model="formData" ref="formName">
+      <el-form :label-position="labelPosition" label-width="90px" :model="formData" ref="formName">
         <el-form-item label="新增标签：" size="medium">
           <el-input v-model="tag" class="tag-input" clearable></el-input>
           <el-button type="primary" icon="el-icon-plus" circle @click="addTag"></el-button>
@@ -144,8 +144,7 @@ export default {
 .mood {
   color: #333;
   &-edit {
-    max-width: 500px;
-    padding: 20px;
+    width: 550px;
     .tag-input {
       width: 86%;
       margin-right: 10px;
@@ -160,6 +159,13 @@ export default {
   &-table {
     width: 1200px;
     margin: auto;
+  }
+}
+@media (max-width: 980px) {
+  .mood{
+    &-edit{
+      width: 100%;
+    }
   }
 }
 </style>
