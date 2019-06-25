@@ -1,17 +1,18 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  routes: [{
+  routes: [
+    {
       path: '/',
-      redirect: '/admin/mood'
+      redirect: '/admin/category'
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import( /* webpackChunkName: "about" */ './views/Login.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/Login.vue')
     },
     {
       path: '/admin',
@@ -20,34 +21,49 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import( /* webpackChunkName: "Admin" */ './views/Admin.vue'),
-      children:[
+      component: () => import(/* webpackChunkName: "Admin" */ './views/Admin.vue'),
+      children: [
         {
           path: 'article',
-          name: 'article',
-          component: () => import( /* webpackChunkName: "Article" */ './views/management/Article.vue'),
+          name: 'Article',
+          component: () => import(/* webpackChunkName: "Article" */ './views/management/Article.vue')
         },
         {
-          path: 'postArticle',
-          name: 'postArticle',
-          component: () => import( /* webpackChunkName: "PostArticle" */ './views/management/PostArticle.vue'),
+          path: 'newArticle',
+          name: 'NewArticle',
+          component: () => import(/* webpackChunkName: "PostArticle" */ './views/management/NewArticle.vue')
         },
         {
           path: 'picture',
-          name: 'picture',
-          component: () => import( /* webpackChunkName: "Picture" */ './views/management/Picture.vue'),
+          name: 'Picture',
+          component: () => import(/* webpackChunkName: "Picture" */ './views/management/Picture.vue')
         },
         {
           path: 'notice',
-          name: 'notice',
-          component: () => import( /* webpackChunkName: "Notice" */ './views/management/Notice.vue'),
+          name: 'Notice',
+          component: () => import(/* webpackChunkName: "Notice" */ './views/management/Notice.vue')
         },
         {
           path: 'mood',
-          name: 'mood',
-          component: () => import( /* webpackChunkName: "Mood" */ './views/management/Mood.vue'),
+          name: 'Mood',
+          component: () => import(/* webpackChunkName: "Mood" */ './views/management/Mood.vue')
+        },
+        {
+          path: 'newTag',
+          name: 'NewTag',
+          component: () => import(/* webpackChunkName: "NewTag" */ './views/management/NewTag.vue')
+        },
+        {
+          path: 'tag',
+          name: 'Tag',
+          component: () => import(/* webpackChunkName: "Tag" */ './views/management/Tag.vue')
+        },
+        {
+          path: 'category',
+          name: 'Category',
+          component: () => import(/* webpackChunkName: "Category" */ './views/management/Category.vue')
         }
       ]
     }
   ]
-})
+});

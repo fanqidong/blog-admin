@@ -59,7 +59,7 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           //   this.$message.success('登录成功')
-          //   this.handleLogin()
+            this.handleLogin()
         } else {
           this.$message.error('账户或密码格式错误')
         }

@@ -1,48 +1,57 @@
 <template>
   <div class="page edit">
-    <el-form :inline="true" :model="formData" ref="formName" class="edit-form">
+    <el-form
+      :inline="true"
+      :model="formData"
+      :label-position="position"
+      :label-width="formLabelWidth"
+      ref="formName"
+      class="edit-form"
+      size="medium"
+    >
       <section>
-        <el-form-item label="文章标题：" prop="title">
-          <el-input v-model="formData.title" placeholder="标题..." size="medium"></el-input>
+        <el-form-item label="作者：" prop="author">
+          <el-input v-model="formData.author" placeholder="作者..."></el-input>
         </el-form-item>
-        <el-form-item label="文章简介：" prop="title">
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="formData.title" placeholder="标题..."></el-input>
+        </el-form-item>
+        <el-form-item label="分类：" prop="tag">
+          <el-select v-model="formData.tag" multiple placeholder="请选择..." size="small">
+            <el-option
+              v-for="item in tagOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标签：" prop="tag">
+          <el-select v-model="formData.tag" multiple placeholder="请选择..." size="small">
+            <el-option
+              v-for="item in tagOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="封面：" class="poster-img" prop="cover">
           <el-input
-            type="textarea"
-            :rows="4"
-            v-model="formData.desc"
-            placeholder="介绍..."
+            v-model="formData.cover"
+            @input="checkImg"
+            placeholder="支持图片上传、链接..."
             size="medium"
           ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-form-item label="新增标签：" size="medium">
-            <el-input v-model="tag" class="tag-input" clearable @keyup.enter="addTag"></el-input>
-          </el-form-item>
-        </el-form-item>
-        <el-button
-          circle
-          type="primary"
-          class="btn-plus"
-          icon="el-icon-plus"
-          size="medium"
-          @click="addTag"
-        ></el-button>
-        <el-form-item v-show="formData.tagList.length" label="文章标签：" size="medium" prop="tagList">
-          <el-tag
-            class="tag-item"
-            v-for="tag in formData.tagList"
-            :key="tag.name"
-            :type="tag.type"
-            :disable-transitions="false"
-            @close="deleteTag(tag)"
-            closable
-          >{{tag.name}}</el-tag>
-        </el-form-item>
-        <el-form-item label="封面图片：" class="poster-img" prop="posterUrl">
-          <el-input v-model="formData.posterUrl" placeholder="支持图片上传、链接..." size="medium"></el-input>
           <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
         </el-form-item>
-        <el-button type="primary" class="btn-preview" round size="medium" @click="onImgChange">预览</el-button>
+        <el-button
+          v-show="formData.cover"
+          type="primary"
+          class="btn-preview"
+          round
+          @click="onImgChange"
+        >预览</el-button>
         <el-form-item v-show="previewImg">
           <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden>
           <div class="preview-img shadow">
@@ -52,6 +61,18 @@
               <i class="el-icon-delete" @click="deleteImg" title="删除图片"></i>
             </div>
           </div>
+        </el-form-item>
+        <el-form-item label="摘要：" prop="title" style="display:block;">
+          <el-input
+            style="min-width:200px;"
+            class="article-desc"
+            type="textarea"
+            :autosize="{ minRows: 6}"
+            v-model="formData.desc"
+            placeholder="文章摘要..."
+            maxlength="50"
+            show-word-limit
+          ></el-input>
         </el-form-item>
       </section>
       <section class="md-edit">
@@ -75,15 +96,62 @@
 export default {
   data() {
     return {
-      tag: '',
       previewImg: '',
+      formLabelWidth: '60px',
+      position: 'left',
       formData: {
+        author: '',
         title: '',
         desc: '',
-        tagList: [],
+        tag: [],
+        category:'',
         mdContent: '',
-        posterUrl: ''
-      }
+        cover: ''
+      },
+      tagOptions: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        },
+        {
+          value: '选项2',
+          label: '双皮奶'
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎'
+        },
+        {
+          value: '选项4',
+          label: '龙须面'
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ],
+      categoryOptions: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        },
+        {
+          value: '选项2',
+          label: '双皮奶'
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎'
+        },
+        {
+          value: '选项4',
+          label: '龙须面'
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ]
     };
   },
   computed: {
@@ -95,21 +163,24 @@ export default {
   methods: {
     // 预览大图
     previewBigImg() {
-      this.$alert(`<img src='${this.formData.previewImg}' alt>`, {
+      this.$alert(`<img src='${this.previewImg}' alt>`, {
         dangerouslyUseHTMLString: true
       });
     },
     // 删除图片
     deleteImg() {
-      this.formData.previewImg = '';
+      this.previewImg = '';
     },
     // button 模拟表单点击
     uploadImg() {
       this.$refs.uploadImg.click();
     },
+    checkImg() {
+      !this.formData.cover && (this.previewImg = '');
+    },
     // 输入url显示图片
     onImgChange() {
-      this.previewImg = this.formData.posterUrl;
+      this.previewImg = this.formData.cover;
     },
     // 图片预览
     onPreviewImgChange() {
@@ -124,33 +195,8 @@ export default {
         this.previewImg = event.target.result;
       };
     },
-    // 新增标签
-    addTag() {
-      const colorArr = ['', 'success', 'info', 'warning', 'danger'];
-      const tagType = colorArr[Math.floor(Math.random() * colorArr.length)];
-      let { tagList } = this.formData;
-      if (!this.tag.length) {
-        this.$message.error('请勿添加空标签！');
-        return;
-      }
-      if (tagList.length >= 3) {
-        this.$message.error('最多可添加3个标签');
-        this.tag = '';
-        return;
-      }
-      if (tagList.some(val => val.name === this.tag)) {
-        this.$message.error('请勿重复添加标签！');
-        return;
-      }
-      tagList.push({ name: this.tag, type: tagType });
-      this.tag = '';
-    },
-    // 删除标签
-    deleteTag(tag) {
-      let tagList = this.formData.tagList;
-      tagList.splice(tagList.indexOf(tag), 1);
-    },
     submitForm(type) {
+      console.log(type);
       if (!this.validateForm) {
         this.$message.error('你还有未填项哦~');
         return;
@@ -158,7 +204,7 @@ export default {
       this.$message.success('正在提交~');
     },
     // 清空表单
-    resetForm(formName) {
+    resetForm() {
       Object.assign(this.$data, this.$options.data());
     }
   },
@@ -175,7 +221,7 @@ export default {
 }
 /deep/ .v-note-wrapper {
   max-width: 100%;
-  min-height: 600px;
+  min-height: 400px;
 }
 /deep/.tag-item {
   margin-right: 10px;
@@ -192,7 +238,7 @@ export default {
     margin-right: 10px;
   }
   &-preview {
-    margin-bottom: 20px;
+    margin: 0 20px 20px 0;
   }
 }
 .preview-img {
@@ -240,6 +286,13 @@ export default {
   }
   input {
     padding-right: 40px;
+  }
+}
+/deep/.article {
+  &-desc {
+    textarea {
+      resize: none;
+    }
   }
 }
 @media (min-width: 980px) {

@@ -18,7 +18,10 @@ import {
   Table,
   TableColumn,
   Scrollbar,
-  Notification
+  Notification,
+  Popover,
+  Select,
+  Option
 } from 'element-ui';
 
 Vue.use(Button);
@@ -36,6 +39,9 @@ Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 Vue.use(Tag);
 Vue.use(Scrollbar);
+Vue.use(Popover);
+Vue.use(Select);
+Vue.use(Option);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

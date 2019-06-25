@@ -31,7 +31,7 @@
           <img :src="logo" alt>
         </div>
         <ul class="menu-list">
-          <li v-for="menu in menuList" :key="menu.id" class="menu-item">
+          <li v-for="menu in $config.menuList" :key="menu.id" class="menu-item">
             <router-link :to="menu.path" class="flex-center" active-class="active">
               <i :class="[menu.icon,'menu-icon']"></i>
               <span>{{menu.title}}</span>
@@ -46,7 +46,7 @@
         <img :src="logo" alt>
       </div>
       <ul class="menu-list">
-        <li v-for="menu in menuList" :key="menu.id" class="menu-item">
+        <li v-for="menu in $config.menuList" :key="menu.id" class="menu-item">
           <router-link :to="menu.path" class="flex-center" active-class="active">
             <i :class="[menu.icon,'menu-icon']"></i>
             <span>{{menu.title}}</span>
@@ -66,39 +66,7 @@ export default {
   data() {
     return {
       logo,
-      isMenuShow: false,
-      menuList: [
-        {
-          id: 0,
-          path: '/admin/postArticle',
-          title: '文章发布',
-          icon: 'el-icon-edit'
-        },
-        {
-          id: 1,
-          path: '/admin/mood',
-          title: '心情发布',
-          icon: 'el-icon-star-off'
-        },
-        {
-          id: 2,
-          path: '/admin/article',
-          title: '文章管理',
-          icon: 'el-icon-takeaway-box'
-        },
-        {
-          id: 3,
-          path: '/admin/notice',
-          title: '公告管理',
-          icon: 'el-icon-info'
-        },
-        {
-          id: 4,
-          path: '/admin/picture',
-          title: '图片管理',
-          icon: 'el-icon-picture-outline'
-        }
-      ]
+      isMenuShow: false
     };
   },
   methods: {
@@ -197,7 +165,6 @@ export default {
       }
     }
     &-icon {
-      display: none;
       width: 19px;
       height: 18px;
       margin-right: 6px;
