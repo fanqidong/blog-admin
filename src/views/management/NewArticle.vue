@@ -17,7 +17,7 @@
           <el-input v-model="formData.title" placeholder="标题..."></el-input>
         </el-form-item>
         <el-form-item label="分类：" prop="tag">
-          <el-select v-model="formData.tag" multiple placeholder="请选择..." size="small">
+          <el-select v-model="formData.category" multiple placeholder="请选择..." size="small">
             <el-option
               v-for="item in tagOptions"
               :key="item.value"
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import { newArticle } from '@/api/getData';
 export default {
   data() {
     return {
@@ -101,12 +102,12 @@ export default {
       position: 'left',
       formData: {
         author: '',
+        category: [],
         title: '',
         desc: '',
-        tag: [],
-        category:'',
+        cover: '',
         mdContent: '',
-        cover: ''
+        tag: []
       },
       tagOptions: [
         {
@@ -195,11 +196,23 @@ export default {
         this.previewImg = event.target.result;
       };
     },
-    submitForm(type) {
-      console.log(type);
+    async submitForm(type) {
       if (!this.validateForm) {
         this.$message.error('你还有未填项哦~');
         return;
+      }
+      const params = {
+        ...this.formData,
+        readCount:0,
+        state:type,
+        createAt: new Date,
+        updateAt:new Date
+      };
+      try {
+        const res = await newArticle(params);
+        console.log(res)
+      } catch (error) {
+        console.log(error);
       }
       this.$message.success('正在提交~');
     },

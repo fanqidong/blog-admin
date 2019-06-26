@@ -23,6 +23,7 @@
             type="primary"
             :loading="isLoading"
             round
+            :disabled="isLoading"
           >登录</el-button>
         </el-form-item>
       </el-form>
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import { adminLogin } from '@/api/getData'
+import { adminLogin } from '@/api/getData';
 export default {
   name: 'Login',
   data() {
@@ -51,7 +52,7 @@ export default {
           { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
         ]
       }
-    }
+    };
   },
   methods: {
     submitForm(name) {
@@ -59,30 +60,32 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           //   this.$message.success('登录成功')
-            this.handleLogin()
+          this.handleLogin();
         } else {
-          this.$message.error('账户或密码格式错误')
+          this.$message.error('账户或密码格式错误');
         }
-      })
+      });
     },
     async handleLogin() {
-      this.isLoading = true
-      const res = await adminLogin({
+      this.isLoading = true;
+      const params = {
         user_name: this.ruleForm.name,
         user_pwd: this.ruleForm.password
-      })
+      };
+      let res = await adminLogin(params);
       if (res.code === 1) {
-        this.$message.success('登录成功')
-        this.isLoading = false
+        this.$message.success('登录成功');
+        this.isLoading = false;
         this.$router.replace({
           path: '/admin'
-        })
-        return
+        });
+        return;
       }
-      this.$message.error(res.msg)
+      this.$message.error(res.msg);
+      this.isLoading = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

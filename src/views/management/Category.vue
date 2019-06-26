@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { getCategory } from '@/api/getData'
+import { getCategory } from '@/api/getData';
 
 export default {
   data() {
@@ -117,22 +117,22 @@ export default {
         this.previewImg = event.target.result;
       };
     },
-    submitForm(type) {
-        this.handleCategory()
-    //   console.log(type);
-    //   if (!this.validateForm) {
-    //     this.$message.error('你还有未填项哦~');
-    //     return;
-    //   }
-    //   this.$message.success('正在提交~');
+    submitForm() {
+      this.handleCategory();
+      //   console.log(type);
+      //   if (!this.validateForm) {
+      //     this.$message.error('你还有未填项哦~');
+      //     return;
+      //   }
+      //   this.$message.success('正在提交~');
     },
     // 清空表单
     resetForm() {
       Object.assign(this.$data, this.$options.data());
     },
     async handleCategory() {
-      const params = this.formData;
-      const res = await getCategory({ params });
+      let res = await getCategory(this.formData);
+      console.log(res);
       //   if (res.code === 1) {
       //     this.$message.success('登录成功');
       //     this.isLoading = false;
@@ -144,9 +144,7 @@ export default {
       //   this.$message.error(res.msg);
     }
   },
-  mounted() {
-
-  },
+  mounted() {},
   watch: {}
 };
 </script>
