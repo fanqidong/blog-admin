@@ -69,6 +69,7 @@ export default {
       previewImg: '',
       formLabelWidth: '85px',
       position: 'left',
+      categoryList:[],
       formData: {
         title: '',
         desc: '',
@@ -131,7 +132,7 @@ export default {
       Object.assign(this.$data, this.$options.data());
     },
     async handleCategory() {
-      let res = await getCategory(this.formData);
+      let res = await getCategory({categoryList:[this.formData]});
       console.log(res);
       //   if (res.code === 1) {
       //     this.$message.success('登录成功');
