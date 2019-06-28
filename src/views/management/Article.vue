@@ -6,6 +6,7 @@
       <el-button @click="clearFilter">清除所有过滤器</el-button>
       <el-table
         ref="filterTable"
+        empty-text
         :data="tableData"
         class="table-wrapper"
         style="width:100%"

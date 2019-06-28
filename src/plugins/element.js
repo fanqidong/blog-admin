@@ -42,6 +42,7 @@ Vue.use(Scrollbar);
 Vue.use(Popover);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

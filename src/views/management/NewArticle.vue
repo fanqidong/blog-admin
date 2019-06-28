@@ -19,7 +19,7 @@
         <el-form-item label="分类：" prop="tag">
           <el-select v-model="formData.category" multiple placeholder="请选择..." size="small">
             <el-option
-              v-for="item in tagOptions"
+              v-for="item in categoryOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { newArticle } from '@/api/getData';
+import { newArticle, queryCategory } from '@/api/getData';
 export default {
   data() {
     return {
@@ -131,28 +131,7 @@ export default {
           label: '北京烤鸭'
         }
       ],
-      categoryOptions: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ]
+      categoryOptions: []
     };
   },
   computed: {
@@ -203,14 +182,14 @@ export default {
       }
       const params = {
         ...this.formData,
-        readCount:0,
-        state:type,
-        createAt: new Date,
-        updateAt:new Date
+        readCount: 0,
+        state: type,
+        createAt: new Date(),
+        updateAt: new Date()
       };
       try {
         const res = await newArticle(params);
-        console.log(res)
+        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -219,7 +198,25 @@ export default {
     // 清空表单
     resetForm() {
       Object.assign(this.$data, this.$options.data());
+    },
+    // 获取分类列表
+    async getCategories() {
+      try {
+        const res = await queryCategory();
+        res.data.result.forEach(item => {
+          this.categoryOptions.push({
+            label: item.title,
+            value: item._id
+          });
+        });
+        console.log(this.categoryOptions);
+      } catch (error) {
+        console.log(error);
+      }
     }
+  },
+  created() {
+    this.getCategories();
   },
   watch: {}
 };

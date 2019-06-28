@@ -1,75 +1,154 @@
 <template>
   <div class="page edit">
-    <el-form
-      :inline="true"
-      :model="formData"
-      :label-position="position"
-      :label-width="formLabelWidth"
-      ref="formName"
-      class="edit-form"
-      size="medium"
-    >
-      <section>
-        <el-form-item label="分类名称：" prop="author">
-          <el-input v-model="formData.title" placeholder="名称..."></el-input>
-        </el-form-item>
-        <el-form-item label="封面：" class="poster-img" prop="cover">
-          <el-input
-            v-model="formData.cover"
-            @input="checkImg"
-            placeholder="支持图片上传、链接..."
+    <el-button type="primary" @click="isModifyShow = true">新增分类</el-button>
+    <section class="category-table">
+      <el-table
+        border
+        stripe
+        empty-text
+        :data="tableData"
+        v-loading="loading"
+        style="width: 100%"
+        size="medium"
+        :header-cell-style="{
+            'background-color': '#ecf2fc',
+            'color': '#323234',
+            'text-align':'center',
+            'font-size': '16px'
+        }"
+      >
+        <el-table-column
+          prop="createAt"
+          label="创建日期"
+          width="170"
+          align="center"
+          :formatter="formatCreateTime"
+        ></el-table-column>
+        <el-table-column
+          prop="updateAt"
+          label="更新日期"
+          width="170"
+          align="center"
+          :formatter="formatUpdateTime"
+        ></el-table-column>
+        <el-table-column prop="title" label="标题" width="150" align="center"></el-table-column>
+        <el-table-column prop="desc" label="摘要" align="center"></el-table-column>
+        <el-table-column prop="cover" label="封面" align="center" width="170">
+          <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+              <p>链接: {{ scope.row.cover }}</p>
+              <div slot="reference" class="name-wrapper">
+                <img :src="scope.row.cover" class="category-cover" alt>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" fixed="right" align="center" width="170">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </section>
+
+    <!-- 编辑分类弹窗 -->
+    <section class="category-edit">
+      <el-dialog
+        center
+        width="600px"
+        :title="isEdit? '编辑分类' :'新增分类'"
+        :visible.sync="isModifyShow"
+        :before-close="handleClose"
+      >
+        <section class="category-form">
+          <el-form
+            :inline="true"
+            :model="formData"
+            :label-position="position"
+            :label-width="formLabelWidth"
+            ref="formName"
+            class="edit-form"
             size="medium"
-          ></el-input>
-          <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
-        </el-form-item>
-        <el-button
-          v-show="formData.cover"
-          type="primary"
-          class="btn-preview"
-          round
-          @click="onImgChange"
-        >预览</el-button>
-        <el-form-item v-show="previewImg">
-          <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden>
-          <div class="preview-img shadow">
-            <img :src="previewImg" alt>
-            <div class="preview-cover">
-              <i class="el-icon-view" @click="previewBigImg" title="查看大图"></i>
-              <i class="el-icon-delete" @click="deleteImg" title="删除图片"></i>
-            </div>
+          >
+            <el-form-item label="分类标题：" prop="author">
+              <el-input v-model="formData.title" placeholder="名称..."></el-input>
+            </el-form-item>
+            <el-form-item label="封面：" class="poster-img" prop="cover">
+              <el-input
+                v-model="formData.cover"
+                @input="checkImg"
+                placeholder="支持图片上传、链接..."
+                size="medium"
+              ></el-input>
+              <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
+            </el-form-item>
+            <el-button
+              v-show="formData.cover"
+              type="primary"
+              class="btn-preview"
+              round
+              @click="onImgChange"
+            >预览</el-button>
+            <el-form-item v-show="previewImg">
+              <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden>
+              <div class="preview-img shadow">
+                <img :src="previewImg" alt>
+                <div class="preview-cover">
+                  <i class="el-icon-view" @click="previewBigImg" title="查看大图"></i>
+                  <i class="el-icon-delete" @click="deleteImg" title="删除图片"></i>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item label="分类摘要：" prop="title" style="display:block;">
+              <el-input
+                style="min-width:200px;"
+                class="article-desc"
+                type="textarea"
+                :autosize="{ minRows: 6}"
+                v-model="formData.desc"
+                placeholder="分类摘要..."
+                maxlength="50"
+                show-word-limit
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="btn-list">
+            <el-button type="primary" @click="submitForm" size="medium" v-if="!isEdit">添加</el-button>
+            <el-button type="success" @click="handleUpdate" size="medium" v-else>更新</el-button>
+            <el-button type="warning" @click="resetForm" size="medium">重置</el-button>
           </div>
-        </el-form-item>
-        <el-form-item label="分类摘要：" prop="title" style="display:block;">
-          <el-input
-            style="min-width:200px;"
-            class="article-desc"
-            type="textarea"
-            :autosize="{ minRows: 6}"
-            v-model="formData.desc"
-            placeholder="分类摘要..."
-            maxlength="50"
-            show-word-limit
-          ></el-input>
-        </el-form-item>
-      </section>
-      <section class="btn-list">
-        <el-button type="primary" @click="submitForm('public')" size="medium">提交</el-button>
-        <el-button type="warning" @click="resetForm('formName')" size="medium">重置</el-button>
-      </section>
-    </el-form>
+        </section>
+      </el-dialog>
+    </section>
+    <section>
+      <el-dialog title="提示" :visible.sync="isConfirmShow" width="30%" :before-close="handleClose">
+        <span>确认删除当前分类吗？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="isConfirmShow = false">取 消</el-button>
+          <el-button type="primary" @click="confirmOk">确 定</el-button>
+        </span>
+      </el-dialog>
+    </section>
   </div>
 </template>
 
 <script>
-import { getCategory } from '@/api/getData';
-
+import { createCategory, queryCategory, updateCategory, deleteCategory } from '@/api/getData';
+import dayjs from 'dayjs';
 export default {
   data() {
     return {
+      loading: false,
+      isEdit: false,
       previewImg: '',
+      isModifyShow: false,
+      isConfirmShow: false,
       formLabelWidth: '85px',
       position: 'left',
-      categoryList:[],
+      tableData: [],
+      rowId: '',
+      createAt: '',
       formData: {
         title: '',
         desc: '',
@@ -119,31 +198,108 @@ export default {
       };
     },
     submitForm() {
-      this.handleCategory();
-      //   console.log(type);
-      //   if (!this.validateForm) {
-      //     this.$message.error('你还有未填项哦~');
-      //     return;
-      //   }
-      //   this.$message.success('正在提交~');
+      if (!this.validateForm) {
+        this.$message.error('你还有未填项哦~');
+        return;
+      }
+      this.isModifyShow = false;
+      this.handleCreate();
+      this.resetForm();
     },
     // 清空表单
     resetForm() {
-      Object.assign(this.$data, this.$options.data());
+      Object.assign(this.$data.formData, this.$options.data().formData);
     },
-    async handleCategory() {
-      let res = await getCategory({categoryList:[this.formData]});
-      console.log(res);
-      //   if (res.code === 1) {
-      //     this.$message.success('登录成功');
-      //     this.isLoading = false;
-      //     this.$router.replace({
-      //       path: '/admin'
-      //     });
-      //     return;
-      //   }
-      //   this.$message.error(res.msg);
+    // 编辑弹窗关闭
+    handleClose(done) {
+      done();
+      this.resetForm();
+    },
+    // 获取
+    async handleQuery() {
+      this.loading = true;
+      try {
+        const res = await queryCategory();
+        if (res.code === 1) {
+          this.tableData = res.data.result;
+          this.loading = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 新增
+    async handleCreate() {
+      const params = {
+        ...this.formData,
+        createAt: Date.now()
+      };
+      try {
+        const res = await createCategory(params);
+        if (res.code === 1) {
+          this.$message.success(res.msg);
+          this.handleQuery();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 确认删除
+    async confirmOk() {
+      try {
+        const res = await deleteCategory({ _id: this.rowId });
+        if (res.code === 1) {
+          this.$message.success(res.msg);
+          this.handleQuery();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 删除
+    handleDelete(row) {
+      this.rowId = row._id;
+      this.isConfirmShow = true;
+    },
+    // 编辑
+    handleEdit(row) {
+      this.isModifyShow = true;
+      this.isEdit = true;
+      this.rowId = row._id;
+      this.createAt = row.createAt;
+      this.formData.title = row.title;
+      this.formData.desc = row.desc;
+      this.formData.cover = row.cover;
+    },
+    // 更新
+    async handleUpdate() {
+      if (!this.validateForm) {
+        this.$message.error('你还有未填项哦~');
+        return;
+      }
+      let createAt = this.createAt;
+      let params = { id: this.rowId, ...this.formData, createAt };
+      try {
+        const res = await updateCategory(params);
+        if (res.code === 1) {
+          this.handleQuery();
+          this.resetForm();
+          this.isModifyShow = false;
+          this.$message.success(res.msg);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    formatCreateTime(row) {
+      return dayjs(row.createAt).format('YYYY-MM-DD HH:mm:ss');
+    },
+    formatUpdateTime(row) {
+      return dayjs(row.UpdateAt).format('YYYY-MM-DD HH:mm:ss');
     }
+  },
+  created() {
+    this.handleQuery();
   },
   mounted() {},
   watch: {}
@@ -151,6 +307,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.category {
+  &-cover {
+    max-width: 80px;
+    max-height: 60px;
+  }
+  &-form {
+    padding-top: 20px;
+  }
+}
 /deep/ .edit-form {
   .el-form-item__label {
     color: #000;
