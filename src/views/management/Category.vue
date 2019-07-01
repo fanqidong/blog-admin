@@ -218,15 +218,13 @@ export default {
     // 获取
     async handleQuery() {
       this.loading = true;
-      try {
-        const res = await queryCategory();
-        if (res.code === 1) {
-          this.tableData = res.data.result;
-          this.loading = false;
-        }
-      } catch (error) {
-        console.log(error);
+      const res = await queryCategory();
+      if (res.code === 1) {
+        this.tableData = res.data;
+        this.loading = false;
+        return;
       }
+      this.$message.error(res.msg);
     },
     // 新增
     async handleCreate() {
@@ -234,27 +232,24 @@ export default {
         ...this.formData,
         createAt: Date.now()
       };
-      try {
-        const res = await createCategory(params);
-        if (res.code === 1) {
-          this.$message.success(res.msg);
-          this.handleQuery();
-        }
-      } catch (error) {
-        console.log(error);
+      const res = await createCategory(params);
+      if (res.code === 1) {
+        this.$message.success(res.msg);
+        this.handleQuery();
+        return;
       }
+      this.$message.error(res.msg);
     },
     // 确认删除
     async confirmOk() {
-      try {
-        const res = await deleteCategory({ _id: this.rowId });
-        if (res.code === 1) {
-          this.$message.success(res.msg);
-          this.handleQuery();
-        }
-      } catch (error) {
-        console.log(error);
+      const res = await deleteCategory({ _id: this.rowId });
+      if (res.code === 1) {
+        this.$message.success(res.msg);
+        this.handleQuery();
+        this.isConfirmShow = false;
+        return;
       }
+      this.$message.error(res.msg);
     },
     // 删除
     handleDelete(row) {
@@ -279,17 +274,15 @@ export default {
       }
       let createAt = this.createAt;
       let params = { id: this.rowId, ...this.formData, createAt };
-      try {
-        const res = await updateCategory(params);
-        if (res.code === 1) {
-          this.handleQuery();
-          this.resetForm();
-          this.isModifyShow = false;
-          this.$message.success(res.msg);
-        }
-      } catch (error) {
-        console.log(error);
+      const res = await updateCategory(params);
+      if (res.code === 1) {
+        this.handleQuery();
+        this.resetForm();
+        this.isModifyShow = false;
+        this.$message.success(res.msg);
+        return;
       }
+      this.$message.error(res.msg);
     },
     formatCreateTime(row) {
       return dayjs(row.createAt).format('YYYY-MM-DD HH:mm:ss');

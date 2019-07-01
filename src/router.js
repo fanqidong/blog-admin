@@ -54,11 +54,6 @@ export default new Router({
           component: () => import(/* webpackChunkName: "NewTag" */ './views/management/NewTag.vue')
         },
         {
-          path: 'tag',
-          name: 'Tag',
-          component: () => import(/* webpackChunkName: "Tag" */ './views/management/Tag.vue')
-        },
-        {
           path: 'category',
           name: 'Category',
           component: () => import(/* webpackChunkName: "Category" */ './views/management/Category.vue')

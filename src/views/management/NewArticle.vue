@@ -203,13 +203,12 @@ export default {
     async getCategories() {
       try {
         const res = await queryCategory();
-        res.data.result.forEach(item => {
+        res.data.forEach(item => {
           this.categoryOptions.push({
             label: item.title,
             value: item._id
           });
         });
-        console.log(this.categoryOptions);
       } catch (error) {
         console.log(error);
       }

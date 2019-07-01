@@ -8,13 +8,14 @@
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title>博客后台管理</title>
   <style>
+    .el-message-box__wrapper {
+      overflow-y: auto;
+    }
+
     @media (max-width: 980px) {
-      .el-message-box__wrapper {
-        overflow-y: auto;
-      }
 
       .el-message-box__wrapper .el-message-box {
-        width: 100%;
+        width: 80%;
       }
 
       .el-dialog {

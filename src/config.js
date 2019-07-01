@@ -33,17 +33,11 @@ export default {
     {
       id: 5,
       path: '/admin/newTag',
-      title: '新增标签',
+      title: '标签管理',
       icon: 'el-icon-collection-tag'
     },
     {
       id: 6,
-      path: '/admin/tag',
-      title: '标签管理',
-      icon: 'el-icon-collection'
-    },
-    {
-      id: 7,
       path: '/admin/category',
       title: '分类管理',
       icon: 'el-icon-star-off'
