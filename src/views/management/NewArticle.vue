@@ -53,9 +53,9 @@
           @click="onImgChange"
         >预览</el-button>
         <el-form-item v-show="previewImg">
-          <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden>
+          <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden />
           <div class="preview-img shadow">
-            <img :src="previewImg" alt>
+            <img :src="previewImg" alt />
             <div class="preview-cover">
               <i class="el-icon-view" @click="previewBigImg" title="查看大图"></i>
               <i class="el-icon-delete" @click="deleteImg" title="删除图片"></i>
@@ -75,6 +75,11 @@
           ></el-input>
         </el-form-item>
       </section>
+       <section class="btn-list">
+        <el-button type="primary" @click="submitForm('public')" size="medium">公开发布</el-button>
+        <el-button type="success" @click="submitForm('private')" size="medium">私密发布</el-button>
+        <el-button type="warning" @click="resetForm('formName')" size="medium">重置</el-button>
+      </section>
       <section class="md-edit">
         <mavon-editor
           v-model="formData.mdContent"
@@ -82,11 +87,6 @@
           :boxShadow="false"
           :autofocus="false"
         />
-      </section>
-      <section class="btn-list">
-        <el-button type="primary" @click="submitForm('public')" size="medium">公开发布</el-button>
-        <el-button type="success" @click="submitForm('private')" size="medium">私密发布</el-button>
-        <el-button type="warning" @click="resetForm('formName')" size="medium">重置</el-button>
       </section>
     </el-form>
   </div>
@@ -107,7 +107,8 @@ export default {
         desc: '',
         cover: '',
         mdContent: '',
-        tag: []
+        tag: [],
+        htmlContent: ''
       },
       tagOptions: [
         {
@@ -176,6 +177,8 @@ export default {
       };
     },
     async submitForm(type) {
+      const html = document.getElementsByClassName('v-show-content-html')[0].innerText;
+      this.formData.htmlContent = html;
       if (!this.validateForm) {
         this.$message.error('你还有未填项哦~');
         return;
@@ -241,7 +244,7 @@ export default {
 }
 .btn {
   &-list {
-    padding-top: 20px;
+    padding: 20px 0;
   }
   &-upload {
     margin-right: 10px;

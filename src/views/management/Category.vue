@@ -31,14 +31,18 @@
           align="center"
           :formatter="formatUpdateTime"
         ></el-table-column>
-        <el-table-column prop="title" label="标题" width="150" align="center"></el-table-column>
+        <el-table-column prop="title" label="标题" width="150" align="center">
+          <template slot-scope="scope">
+            <a href="https://www.luckydong.cn/category" target="_blank">{{scope.row.title}}</a>
+          </template>
+        </el-table-column>
         <el-table-column prop="desc" label="摘要" align="center"></el-table-column>
         <el-table-column prop="cover" label="封面" align="center" width="170">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>链接: {{ scope.row.cover }}</p>
               <div slot="reference" class="name-wrapper">
-                <img :src="scope.row.cover" class="category-cover" alt>
+                <img :src="scope.row.cover" class="category-cover" alt />
               </div>
             </el-popover>
           </template>
@@ -91,9 +95,9 @@
               @click="onImgChange"
             >预览</el-button>
             <el-form-item v-show="previewImg">
-              <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden>
+              <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden />
               <div class="preview-img shadow">
-                <img :src="previewImg" alt>
+                <img :src="previewImg" alt />
                 <div class="preview-cover">
                   <i class="el-icon-view" @click="previewBigImg" title="查看大图"></i>
                   <i class="el-icon-delete" @click="deleteImg" title="删除图片"></i>
