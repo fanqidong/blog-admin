@@ -1,6 +1,6 @@
 <template>
-  <div class="page mood">
-    <section class="mood-edit">
+  <div class="page tag">
+    <section class="tag-edit">
       <el-form :label-position="labelPosition" label-width="90px" :model="formData" ref="formName">
         <el-form-item label="新增标签：" size="medium">
           <el-input v-model="tag" class="tag-input" clearable></el-input>
@@ -16,10 +16,6 @@
             closable
             @close="deleteTag(tag)"
           >{{tag.name}}</el-tag>
-        </el-form-item>
-        <el-form-item size="medium" class="btn-list">
-          <el-button type="primary" icon="el-icon-plus" round @click="submitForm">新增</el-button>
-          <el-button type="warning" icon="el-icon-refresh" round @click="resetForm('formName')">重置</el-button>
         </el-form-item>
       </el-form>
     </section>
@@ -53,20 +49,11 @@
           label="更新日期"
           width="150"
           column-key="createdAt"
-          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-          :filter-method="filterHandler"
           align="center"
           sortable
         ></el-table-column>
         <el-table-column prop="author" label="作者" width="100" align="center"></el-table-column>
-        <el-table-column
-          prop="tag"
-          label="标签"
-          :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
-          :filter-method="filterTag"
-          filter-placement="bottom-end"
-          align="center"
-        >
+        <el-table-column prop="tag" label="标签" align="center">
           <template slot-scope="scope">
             <el-tag
               :type="scope.row.tag === '家' ? 'success' : 'primary'"
@@ -161,10 +148,6 @@ export default {
         this.$message.error('请勿添加空标签！');
         return;
       }
-      if (tagList.length >= 3) {
-        this.$message.error('最多可添加3个标签');
-        return;
-      }
       if (tagList.some(val => val.name === this.tag)) {
         this.$message.error('请勿重复添加标签！');
         return;
@@ -183,11 +166,6 @@ export default {
         this.$message.error('你还有未填项哦~');
         return;
       }
-    },
-    // 表单重置
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.tag = '';
     },
     resetDateFilter() {
       this.$refs.filterTable.clearFilter('date');
@@ -210,7 +188,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mood {
+.tag {
   color: #333;
   &-edit {
     width: 550px;
@@ -231,7 +209,7 @@ export default {
   }
 }
 @media (max-width: 980px) {
-  .mood {
+  .tag {
     &-edit {
       width: 100%;
     }

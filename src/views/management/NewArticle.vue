@@ -75,7 +75,7 @@
           ></el-input>
         </el-form-item>
       </section>
-       <section class="btn-list">
+      <section class="btn-list">
         <el-button type="primary" @click="submitForm('public')" size="medium">公开发布</el-button>
         <el-button type="success" @click="submitForm('private')" size="medium">私密发布</el-button>
         <el-button type="warning" @click="resetForm('formName')" size="medium">重置</el-button>
@@ -190,13 +190,12 @@ export default {
         createAt: new Date(),
         updateAt: new Date()
       };
-      try {
-        const res = await newArticle(params);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
+      const res = await newArticle(params);
+      if (res.code === 1) {
+        this.$message.success(res.msg);
+        return;
       }
-      this.$message.success('正在提交~');
+      this.$message.error(res.msg);
     },
     // 清空表单
     resetForm() {

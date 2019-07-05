@@ -1,6 +1,7 @@
 <template>
   <div class="page edit">
-    <el-button type="primary" @click="isModifyShow = true">新增分类</el-button>
+    <el-button class="btn-add" type="primary" @click="isModifyShow = true">新增分类</el-button>
+    <!-- 分类表格 -->
     <section class="category-table">
       <el-table
         border
@@ -37,7 +38,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="desc" label="摘要" align="center"></el-table-column>
-        <el-table-column prop="cover" label="封面" align="center" width="170">
+        <el-table-column prop="cover" label="封面" align="center" width="150">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>链接: {{ scope.row.cover }}</p>
@@ -47,7 +48,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="170">
+        <el-table-column label="操作" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
@@ -55,12 +56,11 @@
         </el-table-column>
       </el-table>
     </section>
-
     <!-- 编辑分类弹窗 -->
     <section class="category-edit">
       <el-dialog
         center
-        width="600px"
+        width="480px"
         :title="isEdit? '编辑分类' :'新增分类'"
         :visible.sync="isModifyShow"
         :before-close="handleClose"
@@ -76,14 +76,15 @@
             size="medium"
           >
             <el-form-item label="分类标题：" prop="author">
-              <el-input v-model="formData.title" placeholder="名称..."></el-input>
+              <el-input v-model="formData.title" placeholder="名称..." clearable></el-input>
             </el-form-item>
-            <el-form-item label="封面：" class="poster-img" prop="cover">
+            <el-form-item label="分类封面：" class="poster-img" prop="cover">
               <el-input
                 v-model="formData.cover"
                 @input="checkImg"
                 placeholder="支持图片上传、链接..."
                 size="medium"
+                clearable
               ></el-input>
               <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
             </el-form-item>
@@ -94,7 +95,7 @@
               round
               @click="onImgChange"
             >预览</el-button>
-            <el-form-item v-show="previewImg">
+            <el-form-item v-show="previewImg" class="preview-img">
               <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden />
               <div class="preview-img shadow">
                 <img :src="previewImg" alt />
@@ -104,9 +105,9 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item label="分类摘要：" prop="title" style="display:block;">
+            <el-form-item label="分类摘要：" prop="title">
               <el-input
-                style="min-width:200px;"
+                style="min-width:250px;"
                 class="article-desc"
                 type="textarea"
                 :autosize="{ minRows: 6}"
@@ -125,6 +126,7 @@
         </section>
       </el-dialog>
     </section>
+    <!-- 确认弹窗 -->
     <section>
       <el-dialog title="提示" :visible.sync="isConfirmShow" width="30%" :before-close="handleClose">
         <span>确认删除当前分类吗？</span>
@@ -141,6 +143,7 @@
 import { createCategory, queryCategory, updateCategory, deleteCategory } from '@/api/getData';
 import dayjs from 'dayjs';
 export default {
+  name: 'Category',
   data() {
     return {
       loading: false,
@@ -149,7 +152,7 @@ export default {
       isModifyShow: false,
       isConfirmShow: false,
       formLabelWidth: '85px',
-      position: 'left',
+      position: 'right',
       tableData: [],
       rowId: '',
       createAt: '',
@@ -218,6 +221,9 @@ export default {
     handleClose(done) {
       done();
       this.resetForm();
+      setTimeout(() => {
+        this.isEdit = false;
+      }, 300);
     },
     // 获取
     async handleQuery() {
@@ -309,9 +315,6 @@ export default {
     max-width: 80px;
     max-height: 60px;
   }
-  &-form {
-    padding-top: 20px;
-  }
 }
 /deep/ .edit-form {
   .el-form-item__label {
@@ -331,6 +334,9 @@ export default {
   overflow-y: hidden;
 }
 .btn {
+  &-add {
+    margin: 10px 0 20px;
+  }
   &-list {
     padding-top: 20px;
   }
@@ -342,8 +348,9 @@ export default {
   }
 }
 .preview-img {
+  display: block;
+  text-align: center;
   position: relative;
-  border: 1px solid #eee;
   border-radius: 5px;
   img {
     width: 66px;
