@@ -3,35 +3,14 @@
     <el-button class="btn-add" type="primary" @click="isModifyShow = true">新增分类</el-button>
     <!-- 分类表格 -->
     <section class="category-table">
-      <el-table
-        border
-        stripe
-        empty-text
-        :data="tableData"
-        v-loading="loading"
-        style="width: 100%"
-        size="medium"
-        :header-cell-style="{
+      <el-table border stripe empty-text :data="tableData" v-loading="loading" style="width: 100%" size="medium" :header-cell-style="{
             'background-color': '#ecf2fc',
             'color': '#323234',
             'text-align':'center',
             'font-size': '16px'
-        }"
-      >
-        <el-table-column
-          prop="createAt"
-          label="创建日期"
-          width="170"
-          align="center"
-          :formatter="formatCreateTime"
-        ></el-table-column>
-        <el-table-column
-          prop="updateAt"
-          label="更新日期"
-          width="170"
-          align="center"
-          :formatter="formatUpdateTime"
-        ></el-table-column>
+        }">
+        <el-table-column prop="createAt" label="创建日期" width="170" align="center" :formatter="formatCreateTime"></el-table-column>
+        <el-table-column prop="updateAt" label="更新日期" width="170" align="center" :formatter="formatUpdateTime"></el-table-column>
         <el-table-column prop="title" label="标题" width="150" align="center">
           <template slot-scope="scope">
             <a href="https://www.luckydong.cn/category" target="_blank">{{scope.row.title}}</a>
@@ -58,43 +37,17 @@
     </section>
     <!-- 编辑分类弹窗 -->
     <section class="category-edit">
-      <el-dialog
-        center
-        width="480px"
-        :title="isEdit? '编辑分类' :'新增分类'"
-        :visible.sync="isModifyShow"
-        :before-close="handleClose"
-      >
+      <el-dialog center width="480px" :title="isEdit? '编辑分类' :'新增分类'" :visible.sync="isModifyShow" :before-close="handleClose">
         <section class="category-form">
-          <el-form
-            :inline="true"
-            :model="formData"
-            :label-position="position"
-            :label-width="formLabelWidth"
-            ref="formName"
-            class="edit-form"
-            size="medium"
-          >
+          <el-form :inline="true" :model="formData" :label-position="position" :label-width="formLabelWidth" ref="formName" class="edit-form" size="medium">
             <el-form-item label="分类标题：" prop="author">
               <el-input v-model="formData.title" placeholder="名称..." clearable></el-input>
             </el-form-item>
             <el-form-item label="分类封面：" class="poster-img" prop="cover">
-              <el-input
-                v-model="formData.cover"
-                @input="checkImg"
-                placeholder="支持图片上传、链接..."
-                size="medium"
-                clearable
-              ></el-input>
+              <el-input v-model="formData.cover" @input="checkImg" placeholder="支持图片上传、链接..." size="medium" clearable></el-input>
               <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
             </el-form-item>
-            <el-button
-              v-show="formData.cover"
-              type="primary"
-              class="btn-preview"
-              round
-              @click="onImgChange"
-            >预览</el-button>
+            <el-button v-show="formData.cover" type="primary" class="btn-preview" round @click="onImgChange">预览</el-button>
             <el-form-item v-show="previewImg" class="preview-img">
               <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden />
               <div class="preview-img shadow">
@@ -106,16 +59,7 @@
               </div>
             </el-form-item>
             <el-form-item label="分类摘要：" prop="title">
-              <el-input
-                style="min-width:250px;"
-                class="article-desc"
-                type="textarea"
-                :autosize="{ minRows: 6}"
-                v-model="formData.desc"
-                placeholder="分类摘要..."
-                maxlength="50"
-                show-word-limit
-              ></el-input>
+              <el-input style="min-width:250px;" class="article-desc" type="textarea" :autosize="{ minRows: 6}" v-model="formData.desc" placeholder="分类摘要..." maxlength="50" show-word-limit></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="btn-list">
@@ -215,6 +159,7 @@ export default {
     },
     // 清空表单
     resetForm() {
+      this.previewImg = '';
       Object.assign(this.$data.formData, this.$options.data().formData);
     },
     // 编辑弹窗关闭
@@ -305,7 +250,6 @@ export default {
     this.handleQuery();
   },
   mounted() {},
-  watch: {}
 };
 </script>
 

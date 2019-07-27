@@ -1,14 +1,6 @@
 <template>
   <div class="page edit">
-    <el-form
-      :inline="true"
-      :model="formData"
-      :label-position="position"
-      :label-width="formLabelWidth"
-      ref="formName"
-      class="edit-form"
-      size="medium"
-    >
+    <el-form :inline="true" :model="formData" :label-position="position" :label-width="formLabelWidth" ref="formName" class="edit-form" size="medium">
       <section>
         <el-form-item label="作者：" prop="author">
           <el-input v-model="formData.author" placeholder="作者..."></el-input>
@@ -18,40 +10,19 @@
         </el-form-item>
         <el-form-item label="分类：" prop="tag">
           <el-select v-model="formData.category" multiple placeholder="请选择..." size="small">
-            <el-option
-              v-for="item in categoryOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+            <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签：" prop="tag">
           <el-select v-model="formData.tag" multiple placeholder="请选择..." size="small">
-            <el-option
-              v-for="item in tagOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+            <el-option v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="封面：" class="poster-img" prop="cover">
-          <el-input
-            v-model="formData.cover"
-            @input="checkImg"
-            placeholder="支持图片上传、链接..."
-            size="medium"
-          ></el-input>
+          <el-input v-model="formData.cover" @input="checkImg" placeholder="支持图片上传、链接..." size="medium"></el-input>
           <i class="el-icon-upload icon-pic" @click="uploadImg"></i>
         </el-form-item>
-        <el-button
-          v-show="formData.cover"
-          type="primary"
-          class="btn-preview"
-          round
-          @click="onImgChange"
-        >预览</el-button>
+        <el-button v-show="formData.cover" type="primary" class="btn-preview" round @click="onImgChange">预览</el-button>
         <el-form-item v-show="previewImg">
           <input type="file" name="img" ref="uploadImg" @change="onPreviewImgChange" hidden />
           <div class="preview-img shadow">
@@ -63,30 +34,16 @@
           </div>
         </el-form-item>
         <el-form-item label="摘要：" prop="title" style="display:block;">
-          <el-input
-            style="min-width:200px;"
-            class="article-desc"
-            type="textarea"
-            :autosize="{ minRows: 6}"
-            v-model="formData.desc"
-            placeholder="文章摘要..."
-            maxlength="50"
-            show-word-limit
-          ></el-input>
+          <el-input style="min-width:200px;" class="article-desc" type="textarea" :autosize="{ minRows: 6}" v-model="formData.desc" placeholder="文章摘要..." maxlength="50" show-word-limit></el-input>
         </el-form-item>
       </section>
-      <section class="btn-list">
+      <section class="btn-list fixed">
         <el-button type="primary" @click="submitForm('public')" size="medium">公开发布</el-button>
         <el-button type="success" @click="submitForm('private')" size="medium">私密发布</el-button>
         <el-button type="warning" @click="resetForm('formName')" size="medium">重置</el-button>
       </section>
       <section class="md-edit">
-        <mavon-editor
-          v-model="formData.mdContent"
-          placeholder="骚年，开始你的表演..."
-          :boxShadow="false"
-          :autofocus="false"
-        />
+        <mavon-editor v-model="formData.mdContent" placeholder="骚年，开始你的表演..." :boxShadow="false" :autofocus="false" />
       </section>
     </el-form>
   </div>
@@ -176,6 +133,7 @@ export default {
         this.previewImg = event.target.result;
       };
     },
+    // 表单提交
     async submitForm(type) {
       const html = document.getElementsByClassName('v-show-content-html')[0].innerText;
       this.formData.htmlContent = html;
@@ -218,8 +176,7 @@ export default {
   },
   created() {
     this.getCategories();
-  },
-  watch: {}
+  }
 };
 </script>
 
@@ -244,6 +201,12 @@ export default {
 .btn {
   &-list {
     padding: 20px 0;
+    &.fixed {
+      position: fixed;
+      right: 20px;
+      bottom: 0px;
+      z-index: 9999;
+    }
   }
   &-upload {
     margin-right: 10px;

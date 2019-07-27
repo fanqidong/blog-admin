@@ -4,27 +4,14 @@
       <div class="login-clone shadow"></div>
       <h2 class="login-title tc">博客后台登录</h2>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-        <el-form-item prop="name">
-          <el-input prefix-icon="el-icon-s-custom" v-model="ruleForm.name" placeholder="请输入账号"></el-input>
+        <el-form-item prop="username">
+          <el-input prefix-icon="el-icon-s-custom" v-model="ruleForm.username" placeholder="请输入账号" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input
-            prefix-icon="el-icon-lock"
-            v-model="ruleForm.password"
-            type="password"
-            placeholder="请输入密码"
-            show-password
-          ></el-input>
+          <el-input prefix-icon="el-icon-lock" v-model="ruleForm.password" type="password" placeholder="请输入密码" show-password clearable></el-input>
         </el-form-item>
         <el-form-item align="center">
-          <el-button
-            @click="submitForm('ruleForm')"
-            class="btn-login"
-            type="primary"
-            :loading="isLoading"
-            round
-            :disabled="isLoading"
-          >登录</el-button>
+          <el-button @click="submitForm('ruleForm')" class="btn-login" type="primary" :loading="isLoading" round :disabled="isLoading">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,11 +26,11 @@ export default {
     return {
       isLoading: false,
       ruleForm: {
-        name: '',
+        username: '',
         password: ''
       },
       rules: {
-        name: [
+        username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
           { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
         ],
@@ -54,25 +41,30 @@ export default {
       }
     };
   },
+  mounted() {
+    this.handlePress();
+  },
   methods: {
-    submitForm(name) {
-      //   this.isLoading = true
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          //   this.$message.success('登录成功')
-          this.handleLogin();
-        } else {
-          this.$message.error('账户或密码格式错误');
+    handlePress() {
+      return (document.onkeydown = ev => {
+        let e = ev || event;
+        let key = e.keyCode;
+        if (key === 13) {
+          this.submitForm('ruleForm');
         }
+      });
+    },
+    submitForm(name) {
+      this.$refs[name].validate(valid => {
+        if (!valid) {
+          return;
+        }
+        this.handleLogin();
       });
     },
     async handleLogin() {
       this.isLoading = true;
-      const params = {
-        user_name: this.ruleForm.name,
-        user_pwd: this.ruleForm.password
-      };
-      let res = await adminLogin(params);
+      let res = await adminLogin({ ...this.ruleForm });
       if (res.code === 1) {
         this.$message.success('登录成功');
         this.isLoading = false;

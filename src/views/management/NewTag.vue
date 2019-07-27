@@ -1,66 +1,32 @@
 <template>
   <div class="page tag">
     <section class="tag-edit">
-      <el-form :label-position="labelPosition" label-width="90px" :model="formData" ref="formName">
-        <el-form-item label="新增标签：" size="medium">
-          <el-input v-model="tag" class="tag-input" clearable></el-input>
-          <el-button type="primary" icon="el-icon-plus" circle @click="addTag"></el-button>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" :label-position="labelPosition" label-width="100px">
+        <el-form-item label="新增标签：" size="medium" prop="tagName">
+          <el-input v-model="ruleForm.tagName" size="medium" class="tag-input" clearable></el-input>
         </el-form-item>
-        <el-form-item v-show="formData.tagList.length" label="文章标签：" size="medium" prop="tagList">
-          <el-tag
-            class="tag-item"
-            v-for="tag in formData.tagList"
-            :key="tag.name"
-            :type="tag.type"
-            :disable-transitions="false"
-            closable
-            @close="deleteTag(tag)"
-          >{{tag.name}}</el-tag>
+        <el-form-item>
+          <el-button type="primary" size="medium" icon="el-icon-plus" @click="submitForm('ruleForm')">添加</el-button>
+        </el-form-item>
+        <el-form-item v-show="ruleForm.tagList.length" label="文章标签：" size="medium" prop="tagList">
+          <el-tag class="tag-item" v-for="tag in ruleForm.tagList" :key="tag.name" :type="tag.type" :disable-transitions="false" closable @close="deleteTag(tag)">{{tag.name}}</el-tag>
         </el-form-item>
       </el-form>
     </section>
     <section class="article-table">
-      <el-table
-        ref="filterTable"
-        empty-text
-        :data="tableData"
-        class="table-wrapper"
-        style="width:100%"
-        :header-cell-style="{
+      <el-table ref="filterTable" empty-text :data="tableData" class="table-wrapper" style="width:100%" :header-cell-style="{
             'background-color': '#ecf2fc',
             'color': '#323234',
             'text-align':'center',
             'font-size': '16px'
-        }"
-      >
+        }">
         <el-table-column type="selection" width="50" align="center"></el-table-column>
-        <el-table-column
-          prop="createdAt"
-          label="创建日期"
-          width="150"
-          column-key="createdAt"
-          :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-          :filter-method="filterHandler"
-          align="center"
-          sortable
-        ></el-table-column>
-        <el-table-column
-          prop="updateAt"
-          label="更新日期"
-          width="150"
-          column-key="createdAt"
-          align="center"
-          sortable
-        ></el-table-column>
+        <el-table-column prop="createdAt" label="创建日期" width="150" column-key="createdAt" align="center" sortable></el-table-column>
+        <el-table-column prop="updateAt" label="更新日期" width="150" column-key="createdAt" align="center" sortable></el-table-column>
         <el-table-column prop="author" label="作者" width="100" align="center"></el-table-column>
         <el-table-column prop="tag" label="标签" align="center">
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.tag === '家' ? 'success' : 'primary'"
-              disable-transitions
-              v-for="(item, index) in scope.row.tag"
-              :key="index"
-            >{{item}}</el-tag>
+            <el-tag :type="scope.row.tag === '家' ? 'success' : 'primary'" disable-transitions v-for="(item, index) in scope.row.tag" :key="index">{{item}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center">
@@ -75,12 +41,19 @@
 </template>
 
 <script>
+import { createTag } from '@/api/getData';
 export default {
   data() {
     return {
-      labelPosition: 'right',
-      tag: '',
-      formData: {
+      labelPosition: 'left',
+      rules: {
+        tagName: [
+          { required: true, message: '请输入标签名', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ]
+      },
+      ruleForm: {
+        tagName: '',
         tagList: []
       },
       tableData: [
@@ -132,56 +105,42 @@ export default {
       ]
     };
   },
-  computed: {
-    // 表单验证
-    validateForm() {
-      return Object.keys(this.formData).every(val => this.formData[val].length > 0);
-    }
-  },
   methods: {
     // 新增标签
     addTag() {
       const colorArr = ['', 'success', 'info', 'warning', 'danger'];
       const tagType = colorArr[Math.floor(Math.random() * colorArr.length)];
-      let { tagList } = this.formData;
-      if (!this.tag.length) {
-        this.$message.error('请勿添加空标签！');
-        return;
-      }
-      if (tagList.some(val => val.name === this.tag)) {
-        this.$message.error('请勿重复添加标签！');
-        return;
-      }
-      tagList.push({ name: this.tag, type: tagType });
-      this.tag = '';
+      let { tagName, tagList } = this.ruleForm;
+      tagList.push({ name: tagName, type: tagType });
+      this.ruleForm.tagName = '';
     },
     // 删除标签
     deleteTag(tag) {
-      let tagList = this.formData.tagList;
+      let tagList = this.ruleForm.tagList;
       tagList.splice(tagList.indexOf(tag), 1);
     },
-    // 表单提交
-    submitForm() {
-      if (!this.validateForm) {
-        this.$message.error('你还有未填项哦~');
+    // 新增
+    async handleCreate() {
+      const params = {
+        ...this.formData,
+        createAt: Date.now()
+      };
+      const res = await createTag(params);
+      if (res.code === 1) {
+        this.$message.success(res.msg);
+        this.handleQuery();
         return;
       }
+      this.$message.error(res.msg);
     },
-    resetDateFilter() {
-      this.$refs.filterTable.clearFilter('date');
-    },
-    clearFilter() {
-      this.$refs.filterTable.clearFilter();
-    },
-    formatter(row) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
+    // 表单提交
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (!valid) {
+          return;
+        }
+        this.addTag();
+      });
     }
   }
 };
